@@ -69,4 +69,5 @@ def main():
             print("Enter correct command, please.")
 
 
-main()
+if __name__ == '__main__':
+    main()
