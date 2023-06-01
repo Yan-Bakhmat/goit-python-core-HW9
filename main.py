@@ -1,10 +1,14 @@
 CONTACTS = {}
 
 
+def hello():
+    return 'How can I help you?'
+
+
 def add_or_change_contact(name_and_number):
     name_and_number = name_and_number.split(' ')
     CONTACTS[name_and_number[0]] = name_and_number[1]
-    return "Done"
+    return "Done!"
 
 
 def show_number(name):
@@ -12,31 +16,53 @@ def show_number(name):
 
 
 def show_all(contacts):
-    for name, number in contacts.items():
-        yield f'{name}: {number}\n'
+    if contacts:
+        for name, number in contacts.items():
+            yield f'{name}: {number}'
+    else:
+        return 'The contact list is empty.'
+
+
+def close():
+    return "Good bye!"
 
 
 def input_error(func):
     def inner():
-        pass
+        try:
+            func()
+        except IndexError:
+            print('Enter the name and number separated by a space.')
+        except KeyError:
+            print("The contact is missing.")
+        result = func()
+        return result
     return inner
 
 
-@input_error
+@ input_error
 def main():
     bot_status = True
     while bot_status:
         command = input('Enter the command: ').lower()
-        if command == 'hellow':
-            print('How can I help you?')
-        elif ('add' or "change") in command:
+        if command == 'hello':
+            print(hello())
+        elif 'add' in command:
             print(add_or_change_contact(
-                command.removeprefix('add ').removeprefix('change ')))
+                command.removeprefix('add ')))
+        elif "change" in command:
+            print(add_or_change_contact(
+                command.removeprefix('change ')))
         elif "phone" in command:
             print(show_number(command.removeprefix("phone ")))
         elif command == "show all":
-            for i in show_all(contacts):
-                print()
+            for contact in show_all(CONTACTS):
+                print(contact)
         elif command in ("good bye", "close", "exit"):
-            print("Good bye!")
+            print(close())
             bot_status = False
+        else:
+            print("Enter correct command, please.")
+
+
+main()
