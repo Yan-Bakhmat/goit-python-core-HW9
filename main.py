@@ -16,11 +16,8 @@ def show_number(name):
 
 
 def show_all(contacts):
-    if contacts:
-        for name, number in contacts.items():
-            yield f'{name}: {number}'
-    else:
-        return 'The contact list is empty.'
+    for name, number in contacts.items():
+        yield f'{name}: {number}'
 
 
 def close():
@@ -36,6 +33,8 @@ def input_error(func):
                 flag = False
             except IndexError:
                 print('Enter the name and number separated by a space.')
+            except ValueError:
+                print('I have no idea how you did it, try again.')
             except KeyError:
                 print("The contact is missing.")
         return result
@@ -58,8 +57,11 @@ def main():
         elif "phone" in command:
             print(show_number(command.removeprefix("phone ")))
         elif command == "show all":
-            for contact in show_all(CONTACTS):
-                print(contact)
+            if CONTACTS:
+                for contact in show_all(CONTACTS):
+                    print(contact)
+            else:
+                print('The contact list is empty.')
         elif command in ("good bye", "close", "exit"):
             print(close())
             bot_status = False
