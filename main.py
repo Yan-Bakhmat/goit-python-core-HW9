@@ -29,13 +29,15 @@ def close():
 
 def input_error(func):
     def inner():
-        try:
-            func()
-        except IndexError:
-            print('Enter the name and number separated by a space.')
-        except KeyError:
-            print("The contact is missing.")
-        result = func()
+        flag = True
+        while flag:
+            try:
+                result = func()
+                flag = False
+            except IndexError:
+                print('Enter the name and number separated by a space.')
+            except KeyError:
+                print("The contact is missing.")
         return result
     return inner
 
